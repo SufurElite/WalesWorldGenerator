@@ -1,0 +1,11 @@
+{
+    "id" : "WelshWorldGenerator",
+    "version" : "0.1.1-SNAPSHOT",
+    "author" : "SufurElite",
+    "displayName" : "Wales World Generation",
+    "description" : "A world generation module using facets based on the Welsh countryside.",
+    "dependencies" :
+    [
+        {"id": "Core", "minVersion": "1.0.0"}
+    ]
+}
