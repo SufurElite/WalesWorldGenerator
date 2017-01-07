@@ -24,27 +24,43 @@ import org.terasology.world.chunks.CoreChunk;
 import org.terasology.world.generation.Region;
 import org.terasology.world.generation.WorldRasterizer;
 import org.terasology.world.generation.facets.SurfaceHeightFacet;
+import java.util.Random;
 
 public class WalesWorldRasterizer implements WorldRasterizer {
 
     private Block dirt;
     private Block grass;
+    private Block snow;
+    private Block water;
+    private int rand;
 
     @Override
     public void initialize() {
         dirt = CoreRegistry.get(BlockManager.class).getBlock("Core:Dirt");
         grass = CoreRegistry.get(BlockManager.class).getBlock("Core:Grass");
+        snow = CoreRegistry.get(BlockManager.class).getBlock("Core:Snow");
+        water = CoreRegistry.get(BlockManager.class).getBlock("Core:Water");
+        rand = 0;
     }
 
     @Override
     public void generateChunk(CoreChunk chunk, Region chunkRegion) {
         SurfaceHeightFacet surfaceHeightFacet = chunkRegion.getFacet(SurfaceHeightFacet.class);
+        Random random = new Random();
+
         for (Vector3i position : chunkRegion.getRegion()) {
             float surfaceHeight = surfaceHeightFacet.getWorld(position.x, position.z);
+            rand = random.nextInt(15);
+
+
             if (position.y < surfaceHeight - 1) {
                 chunk.setBlock(ChunkMath.calcBlockPos(position), dirt);
+            } else if (position.y < surfaceHeight && surfaceHeight >= 60+rand) {
+                chunk.setBlock(ChunkMath.calcBlockPos(position), snow);
             } else if (position.y < surfaceHeight) {
                 chunk.setBlock(ChunkMath.calcBlockPos(position), grass);
+            } else if (position.y < 0) {
+                chunk.setBlock(ChunkMath.calcBlockPos(position), water);
             }
         }
     }

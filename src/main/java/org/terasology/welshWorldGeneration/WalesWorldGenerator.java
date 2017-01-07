@@ -15,7 +15,8 @@
  */
 package org.terasology.welshWorldGeneration;
 
-import org.terasology.core.world.generator.facetProviders.SeaLevelProvider;
+import org.terasology.core.world.generator.facetProviders.*;
+import org.terasology.core.world.generator.rasterizers.TreeRasterizer;
 import org.terasology.engine.SimpleUri;
 import org.terasology.registry.In;
 import org.terasology.world.generation.BaseFacetedWorldGenerator;
@@ -23,7 +24,7 @@ import org.terasology.world.generation.WorldBuilder;
 import org.terasology.world.generator.RegisterWorldGenerator;
 import org.terasology.world.generator.plugin.WorldGeneratorPluginLibrary;
 
-@RegisterWorldGenerator(id = "tutorialWorld", displayName = "Wales")
+@RegisterWorldGenerator(id = "Wales", displayName = "Wales")
 public class WalesWorldGenerator extends BaseFacetedWorldGenerator {
 
     public WalesWorldGenerator(SimpleUri uri) {
@@ -36,11 +37,15 @@ public class WalesWorldGenerator extends BaseFacetedWorldGenerator {
     @Override
     protected WorldBuilder createWorld() {
         return new WorldBuilder(worldGeneratorPluginLibrary)
-                .setSeaLevel(0)
-                .addProvider(new SurfaceProvider())
                 .addProvider(new SeaLevelProvider(0))
+                .addProvider(new SurfaceProvider())
+                .addProvider(new PerlinHumidityProvider())
+                .addProvider(new PerlinSurfaceTemperatureProvider())
                 .addProvider(new MountainsProvider())
+                 .addProvider(new BiomeProvider())
                 .addRasterizer(new WalesWorldRasterizer())
+                .addRasterizer(new TreeRasterizer())
+                .addProvider(new DefaultTreeProvider())
                 .addPlugins();
     }
 }
